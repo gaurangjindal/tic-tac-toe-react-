@@ -60,10 +60,12 @@ class App extends React.Component{
   }
   render(){
     const Box = this.state.board.map((box,index) => <div className="box" key={index} onClick={()=>this.handleClick(index)}>{box}</div>)
+    let status = this.state.player ? <h2>Next Player is {this.state.player}</h2>:<Player player={(e)=> this.setPlayer(e)}/>
+
     return (
       <div className="container">
         <h1> tic tak toe game</h1>
-        <Player player={(e) => this.setPlayer(e)}/>
+        {status}
         <div className="board">
          {Box}
         </div>
