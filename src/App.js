@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
+import Player from './components/ChoosePlayer'
 
 class App extends React.Component{
   constructor(props){
     super(props)
     this.state ={
       board : Array(9).fill(null),
-      player:"X",
+      player:null,
       winner:null
     }
   }
@@ -26,7 +27,7 @@ class App extends React.Component{
 
     for(let index = 0; index <winlines.length;index++){
       const [ a,b,c] = winlines[index];
-      if(this.state.board[a] && this.state.board[a] === this.state.board[b] && this.board[a] === this.board[c]){
+      if(this.state.board[a] && this.state.board[a] === this.state.board[b] && this.state.board[a] === this.state.board[c]){
         alert('you won');
        this.setState({
          winner:this.state.winner
@@ -35,8 +36,9 @@ class App extends React.Component{
     }
   }
   handleClick(index){
-    let newBoard = this.state.board
-    if(this.state.board[index] === null && !this.state.winner){
+    if(this.state.player && !this.state.winner){
+      let newBoard = this.state.board
+    if(this.state.board[index] === null){
       newBoard[index] = this.state.player
 
       let newPlayer = this.state.player === "X"? "0":"X"
@@ -44,19 +46,24 @@ class App extends React.Component{
       board:newBoard,
       player:newPlayer
     })
-    this.checkWinner();
     }
     
-    
-    
+    this.checkWinner();
+    }
     console.log(this.state.board)
     //console.log(index)
+  }
+  setPlayer(player){
+    this.setState({
+      player
+    })
   }
   render(){
     const Box = this.state.board.map((box,index) => <div className="box" key={index} onClick={()=>this.handleClick(index)}>{box}</div>)
     return (
       <div className="container">
         <h1> tic tak toe game</h1>
+        <Player player={(e) => this.setPlayer(e)}/>
         <div className="board">
          {Box}
         </div>
