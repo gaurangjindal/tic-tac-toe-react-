@@ -1,26 +1,70 @@
 import React from 'react';
-import logo from './logo.svg';
+import ReactDOM from 'react-dom';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  constructor(props){
+    super(props)
+    this.state ={
+      board : Array(9).fill(null),
+      player:"X",
+      winner:null
+    }
+  }
+  checkWinner(){
+    let winlines = 
+    [
+      ["0","1","2"],
+      ["3","4","5"],
+      ["6","7","8"],
+      ["0","3","6"],
+      ["1","4","7"],
+      ["2","5","8"],
+      ["0","4","8"],
+      ["2","4","6"],
+    ]
+
+    for(let index = 0; index <winlines.length;index++){
+      const [ a,b,c] = winlines[index];
+      if(this.state.board[a] && this.state.board[a] === this.state.board[b] && this.board[a] === this.board[c]){
+        alert('you won');
+       this.setState({
+         winner:this.state.winner
+       })
+      }
+    }
+  }
+  handleClick(index){
+    let newBoard = this.state.board
+    if(this.state.board[index] === null && !this.state.winner){
+      newBoard[index] = this.state.player
+
+      let newPlayer = this.state.player === "X"? "0":"X"
+    this.setState({
+      board:newBoard,
+      player:newPlayer
+    })
+    this.checkWinner();
+    }
+    
+    
+    
+    console.log(this.state.board)
+    //console.log(index)
+  }
+  render(){
+    const Box = this.state.board.map((box,index) => <div className="box" key={index} onClick={()=>this.handleClick(index)}>{box}</div>)
+    return (
+      <div className="container">
+        <h1> tic tak toe game</h1>
+        <div className="board">
+         {Box}
+        </div>
+        
+      </div>
+    )
+  }
 }
+
 
 export default App;
